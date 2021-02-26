@@ -142,7 +142,7 @@ namespace aoc {
         size_t last{0}, next;
         while ((next = in.find(delimiter, last)) != std::string::npos) {
             result.push_back(in.substr(last, next - last));
-            last = next + 1;
+            last = next + delimiter.size();
         }
         result.push_back(in.substr(last));
         return result;
