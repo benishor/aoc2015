@@ -151,6 +151,14 @@ namespace aoc {
     template<typename T>
     class permutations {
     public:
+        explicit permutations(std::set<T> data_) : data{data_.begin(), data_.end()} {
+            std::sort(data.begin(), data.end());
+        }
+
+        explicit permutations(std::vector<T> data_) : data(data_) {
+            std::sort(data.begin(), data.end());
+        }
+
         permutations(std::initializer_list<T> data_) : data(data_) {
             std::sort(data.begin(), data.end());
         }
