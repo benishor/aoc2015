@@ -72,7 +72,7 @@ protected:
                          "David would gain 46 happiness units by sitting next to Alice.\n"
                          "David would lose 7 happiness units by sitting next to Bob.\n"
                          "David would gain 41 happiness units by sitting next to Carol.",
-                .expected_output = "330"
+                .expected_output = "330\n286"
         });
     }
 };
