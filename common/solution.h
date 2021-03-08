@@ -175,6 +175,42 @@ namespace aoc {
         std::vector<T> data;
     };
 
+    template<typename T>
+    class combinations {
+    public:
+        combinations(std::set<T> data_, size_t r_) : data{data_.begin(), data_.end()}, r(r_) {
+            v = std::vector<bool>(data_.size());
+            std::fill(v.end() - r, v.end(), true);
+        }
+
+        combinations(std::vector<T> data_, size_t r_) : data(data_), r(r_) {
+            v = std::vector<bool>(data_.size());
+            std::fill(v.end() - r, v.end(), true);
+        }
+
+        combinations(std::initializer_list<T> data_, size_t r_) : data(data_), r(r_) {
+            v = std::vector<bool>(data_.size());
+            std::fill(v.end() - r, v.end(), true);
+        }
+
+        [[nodiscard]] std::vector<T> get() const {
+            std::vector<T> result;
+            for (size_t i = 0; i < v.size(); i++) {
+                if (v[i]) result.push_back(data[i]);
+            }
+            return result;
+        }
+
+        bool next() {
+            return std::next_permutation(v.begin(), v.end());
+        }
+
+    private:
+        std::vector<T> data;
+        size_t r;
+        std::vector<bool> v;
+    };
+
     std::string& ltrim(std::string& str, const std::string& chars = "\t\n\v\f\r ") {
         str.erase(0, str.find_first_not_of(chars));
         return str;
