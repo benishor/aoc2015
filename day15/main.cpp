@@ -106,7 +106,7 @@ protected:
                 .name = "First",
                 .input = "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8\n"
                          "Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3",
-                .expected_output = "62842880"
+                .expected_output = "62842880\n57600000"
         });
     }
 };
