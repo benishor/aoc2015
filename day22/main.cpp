@@ -160,8 +160,16 @@ struct spell {
     }
 };
 
+enum class game_difficulty {
+    easy,
+    hard
+};
+
 class game_play {
 public:
+
+    explicit game_play(game_difficulty _difficulty) : difficulty{_difficulty} {}
+
     int play(game_state state) {
         int minimum_mana = std::numeric_limits<int>::max();
         player_round(std::move(state), minimum_mana, 0);
@@ -169,6 +177,8 @@ public:
     }
 
 private:
+
+    const game_difficulty difficulty;
 
     static std::vector<spell_type> available_spells(game_state& state) {
         std::vector<spell_type> result;
@@ -181,13 +191,13 @@ private:
         return result;
     }
 
-    void print_stats(game_state& state) {
+    static void print_stats(game_state& state) {
         std::cout << "- Player has " << state.hp << " hit points, " << state.armor << " armor, " << state.mana
                   << " mana." << std::endl;
         std::cout << "- Boss has " << state.boss_hp << " hit points." << std::endl;
     }
 
-    void on_player_win(int& minimum_mana, int spent_mana) {
+    static void on_player_win(int& minimum_mana, int spent_mana) {
         if (debug) std::cout << "Player won with " << spent_mana << std::endl;
         if (minimum_mana > spent_mana) {
             minimum_mana = spent_mana;
@@ -196,8 +206,12 @@ private:
     }
 
     void player_round(game_state state, int& minimum_mana, int spent_mana) {
+        if (difficulty == game_difficulty::hard) {
+            state.hp--;
+        }
+
         // early out. no point in continuing
-        if (spent_mana >= minimum_mana) return;
+        if (state.hp <= 0 || spent_mana >= minimum_mana) return;
 
         if (debug) {
             std::cout << "-- Player turn --" << std::endl;
@@ -269,8 +283,8 @@ private:
 
 class day22 : public aoc::solution {
 protected:
-    void run(std::istream& in, std::ostream& out) override {
 
+    game_state new_state() {
         game_state state = {
                 .hp = 50,
                 .mana = 500,
@@ -279,9 +293,15 @@ protected:
                 .boss_damage = 8,
                 .active_spells = {}
         };
+        return state;
+    }
 
-        game_play game;
-        std::cout << game.play(state) << std::endl;
+    void run(std::istream& in, std::ostream& out) override {
+        game_play game1{game_difficulty::easy};
+        std::cout << game1.play(new_state()) << std::endl;
+
+        game_play game2{game_difficulty::hard};
+        std::cout << game2.play(new_state()) << std::endl;
     }
 };
 
